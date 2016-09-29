@@ -1,6 +1,11 @@
 doctype html
 html
 	head
-		title Hi there!
+		title Power Grid
 	body
-		p Hello!
+		div#application
+
+		if isProduction
+			script(type="text/javascript", src="/public/bundle.min.js")
+		else
+			script(type="text/javascript", src="/public/bundle.js")

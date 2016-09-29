@@ -7,7 +7,10 @@ import uglify from 'gulp-uglify';
 import util from 'gulp-util';
 import webpackStream from 'webpack-stream';
 
-const webpackConfig = require('./webpack.config.js');
+const webpackConfig = require(
+	process.env.NODE_ENV === 'production' 
+	? './webpack/production.config.js'
+	: './webpack/development.config.js');
 
 gulp.task('lint', () => {
 	return gulp
@@ -42,7 +45,7 @@ gulp.task('develop', () => {
 	const server = gls.new('service/index.js');
 	server.start();
 
-	gulp.watch(['service/**/*.js'], () => {
+	gulp.watch(['service/**/*.js', 'service/index.pug'], () => {
 		util.log('[gulp-live-server]', 'Change detected. Restarting server...');
 		server.start.bind(server)();
 	});

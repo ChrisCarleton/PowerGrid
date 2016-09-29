@@ -3,6 +3,7 @@ import express from 'express';
 import expressLogger from 'express-bunyan-logger';
 import http from 'http';
 import log from './logger';
+import path from 'path';
 import pug from 'pug';
 
 const app = express();
@@ -13,6 +14,8 @@ app.use(expressLogger({
 	logger: log,
 	excludes: [ 'referer', 'user-agent', 'body', 'short-body', 'response-hrtime', 'req', 'res', 'res-headers' ]
 }));
+
+app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/', (req, res) => {
 	res.send(renderHomePage({

@@ -3,8 +3,6 @@ var webpack = require('webpack');
 
 module.exports = {
 	entry: [
-		'webpack-dev-server/client?http://localhost:8080/',
-		'webpack/hot/only-dev-server',
 		'app.jsx'
 	],
 	output: {
@@ -25,15 +23,6 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin()
-	],
-	devtool: 'inline-source-map',
-	devServer: {
-		hot: true,
-		proxy: {
-			'*': 'http://localhost:' + (process.env.POWERGRID_PORT || 47001)
-		},
-		host: 'localhost'
-	}
+	]
 };
