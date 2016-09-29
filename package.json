@@ -30,6 +30,8 @@
     "pug": "^2.0.0-beta6"
   },
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "eslint-plugin-react": "^6.3.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1"
   }
 }
