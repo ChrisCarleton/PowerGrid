@@ -1,6 +1,7 @@
 import config from './config';
 import express from 'express';
 import http from 'http';
+import log from './logger';
 import pug from 'pug';
 
 const app = express();
@@ -16,4 +17,4 @@ app.get('/', (req, res) => {
 
 const server = http.createServer(app);
 server.listen(config.port);
-console.log('server started on port ' + config.port);
+log.info('Application server started on port', config.port);
