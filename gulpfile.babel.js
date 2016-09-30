@@ -38,6 +38,7 @@ gulp.task('cover-tests', ['lint'], () => {
 
 gulp.task('test', ['cover-tests'], () => {
 	process.env.NODE_ENV = 'test';
+	require('./tests/test-init');
 	return gulp
 		.src(['tests/**/*.tests.js'])
 		.pipe(mocha())

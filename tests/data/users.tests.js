@@ -1,7 +1,21 @@
 import { expect } from 'chai';
 
-describe('Test', () => {
-	it('passes', () => {
-		expect(1).to.be.ok;
+describe('User data model', () => {
+
+	var user = {};
+	beforeEach(() => {
+		user = {
+			
+		};
+	});
+	
+	describe('validation', () => {
+
+		const checkForFailure = () => {};
+
+	});
+
+	describe('extension methods', () => {
+
 	});
 });
