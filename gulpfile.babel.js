@@ -5,6 +5,8 @@ import gls from 'gulp-live-server';
 import rename from 'gulp-rename';
 import uglify from 'gulp-uglify';
 import util from 'gulp-util';
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
 import webpackStream from 'webpack-stream';
 
 const webpackConfig = require(
@@ -41,7 +43,7 @@ gulp.task('minify', ['clean', 'bundle'], () => {
 		.pipe(gulp.dest('public/'));
 });
 
-gulp.task('develop', () => {
+gulp.task('dev-server', done => {
 	const server = gls.new('service/index.js');
 	server.start();
 
@@ -49,6 +51,24 @@ gulp.task('develop', () => {
 		util.log('[gulp-live-server]', 'Change detected. Restarting server...');
 		server.start.bind(server)();
 	});
+
+	new WebpackDevServer(webpack(webpackConfig), {
+		publicPath: '/public/',
+		stats: {
+			colors: true
+		},
+		hot: true,
+		proxy: {
+			'**': 'http://localhost:28988'
+		}
+	})
+	.listen(8080, 'localhost', err => {
+		if (err) throw new util.PluginError('webpack-dev-server', err);
+
+		util.log('[webpack-dev-server]', 'Webpack dev server online at http://localhost:8080/');
+
+		done();
+	});
 });
 
-gulp.task('default', ['develop']);
+gulp.task('default', ['dev-server']);
