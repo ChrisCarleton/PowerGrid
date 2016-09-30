@@ -2,6 +2,7 @@ import clean from 'gulp-clean';
 import eslint from 'gulp-eslint';
 import gulp from 'gulp';
 import gls from 'gulp-live-server';
+import istanbul from 'gulp-istanbul';
 import mocha from 'gulp-mocha';
 import rename from 'gulp-rename';
 import uglify from 'gulp-uglify';
@@ -23,10 +24,24 @@ gulp.task('lint', () => {
 		.pipe(eslint.failOnError());
 });
 
-gulp.task('test', () => {
+gulp.task('cover-tests', ['lint'], () => {
+	const isparta = require('isparta');
+
+	return gulp
+		.src(['service/**/*.js'])
+		.pipe(istanbul({ 
+			instrumenter: isparta.Instrumenter,
+			includeUntested: true
+		}))
+		.pipe(istanbul.hookRequire());
+});
+
+gulp.task('test', ['cover-tests'], () => {
+	process.env.NODE_ENV = 'test';
 	return gulp
 		.src(['tests/**/*.tests.js'])
-		.pipe(mocha());
+		.pipe(mocha())
+		.pipe(istanbul.writeReports({ reporters: ['lcov'] }));
 });
 
 gulp.task('bundle', ['lint'], () => {
