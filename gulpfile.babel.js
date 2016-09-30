@@ -2,6 +2,7 @@ import clean from 'gulp-clean';
 import eslint from 'gulp-eslint';
 import gulp from 'gulp';
 import gls from 'gulp-live-server';
+import mocha from 'gulp-mocha';
 import rename from 'gulp-rename';
 import uglify from 'gulp-uglify';
 import util from 'gulp-util';
@@ -20,6 +21,12 @@ gulp.task('lint', () => {
 		.pipe(eslint())
 		.pipe(eslint.format())
 		.pipe(eslint.failOnError());
+});
+
+gulp.task('test', () => {
+	return gulp
+		.src(['tests/**/*.tests.js'])
+		.pipe(mocha());
 });
 
 gulp.task('bundle', ['lint'], () => {
