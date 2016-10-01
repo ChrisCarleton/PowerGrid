@@ -7,6 +7,6 @@ const config = {
 	logFile: process.env.POWERGRID_LOG_FILE
 };
 
-config.database = process.env.POWERGRID_DATABASE || `mongodb://localhost:27017/powergrid-${config.env}`;
+config.database = process.env.POWERGRID_DATABASE || `mongodb://localhost:27017/powergrid_${config.env}`;
 
 export default config;

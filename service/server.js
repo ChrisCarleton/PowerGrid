@@ -20,7 +20,7 @@ app.use(expressLogger({
 	excludes: [ 'referer', 'user-agent', 'body', 'short-body', 'response-hrtime', 'req', 'res', 'res-headers' ]
 }));
 
-app.use('/public', express.static(path.join(__dirname, '..', 'public')));
+app.use('/public', express.static(path.join(__dirname, '../public')));
 
 const routeLoaders = glob.sync(path.join(__dirname, 'routes') + '**/*.routes.js');
 routeLoaders.forEach(routeLoader => {
@@ -38,3 +38,8 @@ app.get('/', (req, res) => {
 const server = http.createServer(app);
 server.listen(config.port);
 log.info('Application server started on port', config.port);
+
+module.exports = {
+	app: app,
+	connection: server
+};
