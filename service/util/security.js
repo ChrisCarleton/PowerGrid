@@ -22,6 +22,18 @@ export default function(app) {
 		})
 	);
 
+	passport.serializeUser((user, done) => {
+		done(null, user.username);
+	});
+
+	passport.deserializeUser((id, done) => {
+		User.findByUsername(id)
+			.then(user => {
+				done(null, user);
+			})
+			.catch(done);
+	});
+
 	app.use(passport.initialize());
 	app.use(passport.session());
 
