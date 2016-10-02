@@ -9,7 +9,7 @@ const createAccountValidation = Joi.object().keys({
 	password: Joi.string().required()
 });
 
-export function createAccount(req, res) {
+export function createProfile(req, res) {
 	const validation = Joi.validate(req.body, createAccountValidation);
 	if (validation.error) {
 		req.log.trace('Create account validation failed', validation);
@@ -29,7 +29,7 @@ export function createAccount(req, res) {
 	userModel.save()
 		.then(result => {
 			req.log.debug('User account', req.body.username, 'created successfully.');
-			res.json(result);
+			res.json(result.toJSON());
 		})
 		.catch(err => {
 			req.log.error('Error creating user account', req.body.username, err );
@@ -49,6 +49,10 @@ export function deleteProfile() {
 
 }
 
+export function getMyProfile() {
+
+}
+
 export function getProfile() {
 
 }
@@ -57,8 +61,8 @@ export function findUserByName() {
 
 }
 
-export function login() {
-
+export function login(req, res) {
+	res.json(req.user.toJSON());
 }
 
 export function logout() {

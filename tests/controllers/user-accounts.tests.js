@@ -74,4 +74,30 @@ describe('Account controller', () => {
 
 	});
 
+	describe('login method', () => {
+
+		beforeEach(done => {
+			new User(user)
+				.save()
+				.then(() => done())
+				.catch(done);
+		});
+
+		it('Returns 200 on successful login', done => {
+			request(app)
+				.post('/api/1.0/account/login')
+				.send({ username: user.username, password: user.password })
+				.expect(200)
+				.end((err, res) => {
+					if (err) return done(err);
+					expect(res.body.username).to.equal(user.username);
+					expect(res.body.email).to.equal(user.email);
+					expect(res.body.displayName).to.equal(user.displayName);
+					expect(res.body.memberSince).to.exist;
+					done();
+				});
+		});
+
+	});
+
 });

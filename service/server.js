@@ -8,6 +8,7 @@ import http from 'http';
 import log from './logger';
 import path from 'path';
 import pug from 'pug';
+import security from './util/security';
 
 const app = express();
 const renderHomePage = pug.compileFile(__dirname + '/index.pug');
@@ -17,6 +18,8 @@ log.debug('Connecting to MongoDB at', config.database);
 database.connect(config.database);
 
 app.use(bodyParser.json({ inflate: true }));
+
+security(app);
 
 app.use(expressLogger({
 	logger: log,

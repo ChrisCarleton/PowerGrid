@@ -1,7 +1,9 @@
+import { authenticate } from '../controllers/security.controller';
 import {
 	changePassword,
-	createAccount,
-	deleteAccount,
+	createProfile,
+	deleteProfile,
+	getMyProfile,
 	getProfile,
 	findUserByName,
 	updateProfile,
@@ -10,20 +12,22 @@ import {
 	resetPassword
 } from '../controllers/account.controller';
 
-const BASE_ROUTE = '/api/1.0/users/';
-const BASE_ROUTE_WITH_ID = BASE_ROUTE + ':username/';
+const USERS_ROUTE = '/api/1.0/users/';
+const USER_ROUTE = USERS_ROUTE + ':username/';
+const ACCOUNT_ROUTE = '/api/1.0/account/';
 
 module.exports = app => {
 
-	app.post(BASE_ROUTE, createAccount);
-	app.get(BASE_ROUTE_WITH_ID, getProfile);
-	app.delete(BASE_ROUTE_WITH_ID, deleteProfile);
-	app.put(BASE_ROUTE_WITH_ID, updateProfile);
-	app.put(BASE_ROUTE_WITH_ID + 'password/change/', changePassword);
-	app.put(BASE_ROUTE_WITH_ID + 'password/reset/', resetPassword);
+	app.get(USER_ROUTE, getProfile);
+	app.post(USERS_ROUTE, createProfile);
+	app.put(USER_ROUTE, updateProfile);
+	app.delete(USER_ROUTE, deleteProfile);
+	app.put(USER_ROUTE + 'password/', changePassword);
 
-	app.post(BASE_ROUTE + 'login/', login);
-	app.post(BASE_ROUTE + 'logout/', logout);
+	app.get(ACCOUNT_ROUTE + 'me/', getMyProfile);
+	app.post(ACCOUNT_ROUTE + 'login/', authenticate, login);
+	app.post(ACCOUNT_ROUTE + 'logout/', logout);
+	app.post(ACCOUNT_ROUTE + 'resetPassword/', resetPassword);
 
 	app.param('username', findUserByName);
 

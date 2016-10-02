@@ -37,6 +37,15 @@ UserSchema.methods.validatePassword = function(password) {
 	return bcrypt.compareSync(password, this.passwordHash);
 };
 
+UserSchema.methods.toJSON = function() {
+	return {
+		username: this.username,
+		email: this.email,
+		displayName: this.displayName,
+		memberSince: this.created
+	};
+};
+
 UserSchema.virtual('password').set(function(password) {
 	const salt = bcrypt.genSaltSync(8);
 	const hash = bcrypt.hashSync(password, salt);
