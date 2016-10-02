@@ -9,6 +9,8 @@ import log from './logger';
 import path from 'path';
 import pug from 'pug';
 import security from './util/security';
+import session from 'express-session';
+import uuid from 'uuid';
 
 const app = express();
 const renderHomePage = pug.compileFile(__dirname + '/index.pug');
@@ -17,8 +19,17 @@ const isProduction = (config.env === 'production');
 log.debug('Connecting to MongoDB at', config.database);
 database.connect(config.database);
 
+app.use(session({
+	cookie: {
+		maxAge: 259200000	// 3 Days
+		// secure: true
+	},
+	genid: () => { return uuid.v4(); },
+	resave: false,
+	saveUninitialized: false,
+	secret: config.sessionSecret
+}));
 app.use(bodyParser.json({ inflate: true }));
-
 security(app);
 
 app.use(expressLogger({

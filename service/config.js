@@ -4,7 +4,9 @@ const config = {
 	port: process.env.POWERGRID_PORT || 28988,
 
 	logLevel: process.env.POWERGRID_LOG_LEVEL || 'debug',
-	logFile: process.env.POWERGRID_LOG_FILE
+	logFile: process.env.POWERGRID_LOG_FILE,
+
+	sessionSecret: process.env.POWERGRID_SESSION_SECRET || 'Eyes-Only'
 };
 
 config.database = process.env.POWERGRID_DATABASE || `mongodb://localhost:27017/powergrid_${config.env}`;
