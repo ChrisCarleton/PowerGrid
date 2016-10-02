@@ -83,7 +83,7 @@ describe('Account controller', () => {
 				.catch(done);
 		});
 
-		it('Returns 200 on successful login', done => {
+		it('returns 200 on successful login', done => {
 			request(app)
 				.post('/api/1.0/account/login')
 				.send({ username: user.username, password: user.password })
@@ -98,6 +98,40 @@ describe('Account controller', () => {
 				});
 		});
 
+		it('returns 401 if password is invalid', done => {
+			request(app)
+				.post('/api/1.0/account/login')
+				.send({ username: user.username, password: 'wrongpassword' })
+				.expect(401)
+				.end((err, res) => {
+					if (err) return done(err);
+					expect(res.body.errorId).to.equal('err.notAuthorized');
+					done();
+				});
+		});
+
+		it('returns 401 if username does not exist', done => {
+			request(app)
+				.post('/api/1.0/account/login')
+				.send({ username: 'jim_whatever', password: user.password })
+				.expect(401)
+				.end((err, res) => {
+					if (err) return done(err);
+					expect(res.body.errorId).to.equal('err.notAuthorized');
+					done();
+				});
+		});
+
+		it('returns 401 if request is invalid', done => {
+			request(app)
+				.post('/api/1.0/account/login')
+				.send({ uselessKey: 'lol' })
+				.expect(401)
+				.end((err, res) => {
+					if (err) return done(err);
+					done();
+				});
+		});
 	});
 
 });
