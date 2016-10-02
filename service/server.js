@@ -6,6 +6,7 @@ import expressLogger from 'express-bunyan-logger';
 import glob from 'glob';
 import http from 'http';
 import log from './logger';
+import connectMongo from 'connect-mongo';
 import path from 'path';
 import pug from 'pug';
 import security from './util/security';
@@ -15,6 +16,8 @@ import uuid from 'uuid';
 const app = express();
 const renderHomePage = pug.compileFile(__dirname + '/index.pug');
 const isProduction = (config.env === 'production');
+
+const MongoStore = connectMongo(session);
 
 log.debug('Connecting to MongoDB at', config.database);
 database.connect(config.database);
@@ -27,7 +30,11 @@ app.use(session({
 	genid: () => { return uuid.v4(); },
 	resave: false,
 	saveUninitialized: false,
-	secret: config.sessionSecret
+	secret: config.sessionSecret,
+	store: new MongoStore({
+		mongooseConnection: database.connection,
+		ttl: 259200
+	})
 }));
 app.use(bodyParser.json({ inflate: true }));
 security(app);
