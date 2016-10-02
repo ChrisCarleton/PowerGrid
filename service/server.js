@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser';
 import config from './config';
 import database from './data/database';
 import express from 'express';
@@ -14,6 +15,8 @@ const isProduction = (config.env === 'production');
 
 log.debug('Connecting to MongoDB at', config.database);
 database.connect(config.database);
+
+app.use(bodyParser.json({ inflate: true }));
 
 app.use(expressLogger({
 	logger: log,
@@ -38,6 +41,10 @@ app.get('/', (req, res) => {
 const server = http.createServer(app);
 server.listen(config.port);
 log.info('Application server started on port', config.port);
+
+process.on('uncaughtException', err => {
+	log.fatal('Uncaught exception:', err);
+});
 
 module.exports = {
 	app: app,
