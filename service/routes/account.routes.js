@@ -22,7 +22,7 @@ module.exports = app => {
 
 	app.get(USER_ROUTE, requireProfileAuth, getProfile);
 	app.post(USERS_ROUTE, createProfile);
-	app.put(USER_ROUTE, updateProfile);
+	app.put(USER_ROUTE, requireProfileAuth, updateProfile);
 	app.delete(USER_ROUTE, deleteProfile);
 	app.put(USER_ROUTE + 'password/', requireProfileAuth, changePassword);
 

@@ -238,25 +238,25 @@ describe('Account controller', () => {
 				.catch(done);
 		});
 
-		it('will succeed if user is authorized', () => {
+		// it('will succeed if user is authorized', () => {
 
-		});
+		// });
 
-		it('will fail if user is not owner of hte profile', () => {
+		// it('will fail if user is not owner of hte profile', () => {
 
-		});
+		// });
 
-		it('will fail if user is not authenticated', () => {
+		// it('will fail if user is not authenticated', () => {
 
-		});
+		// });
 
-		it('will close the session and log user out', () => {
+		// it('will close the session and log user out', () => {
 
-		});
+		// });
 
-		it('will fail if database call fails', () => {
+		// it('will fail if database call fails', () => {
 
-		});
+		// });
 	});
 
 	describe('my account method', () => {
@@ -505,6 +505,219 @@ describe('Account controller', () => {
 				.then(() => {
 					return request
 						.get('/api/1.0/users/WhoDat/')
+						.expect(401);
+				})
+				.then(res => {
+					expect(res.body.errorId).to.equal('err.notAuthorized');
+					done();
+				})
+				.catch(done);
+		});
+
+	});
+
+	describe('update profile method', () => {
+
+		let updateRoute;
+		beforeEach(done => {
+			new User(user)
+				.save()
+				.then(() => done())
+				.catch(done);
+
+			updateRoute = `/api/1.0/users/${user.username}/`;
+		});
+
+		it('updates profile if successful', done => {
+			const updatedProfile = {
+				email: 'new@addr.ess',
+				displayName: 'Doc Holiday'
+			};
+
+			request
+				.post('/api/1.0/account/login')
+				.send({ username: user.username, password: user.password })
+				.expect(200)
+				.then(() => {
+					return request
+						.put(updateRoute)
+						.send(updatedProfile)
+						.expect(200);
+				})
+				.then(res => {
+					expect(res.body.username).to.equal(user.username);
+					expect(res.body.email).to.equal(updatedProfile.email);
+					expect(res.body.displayName).to.equal(updatedProfile.displayName);
+					expect(res.body.memberSince).to.exist;
+
+					return User.findByUsername(user.username);
+				})
+				.then(res => {
+					expect(res.email).to.equal(updatedProfile.email);
+					expect(res.displayName).to.equal(updatedProfile.displayName);
+					expect(res.passwordHash).to.exist;
+					expect(res.created).to.exist;
+					done();
+				})
+				.catch(done);
+		});
+
+		it('works if user does not change their e-mail address', done => {
+			const updatedProfile = {
+				email: user.email,
+				displayName: 'Doc Holiday'
+			};
+
+			request
+				.post('/api/1.0/account/login')
+				.send({ username: user.username, password: user.password })
+				.expect(200)
+				.then(() => {
+					return request
+						.put(updateRoute)
+						.send(updatedProfile)
+						.expect(200);
+				})
+				.then(res => {
+					expect(res.body.username).to.equal(user.username);
+					expect(res.body.email).to.equal(updatedProfile.email);
+					expect(res.body.displayName).to.equal(updatedProfile.displayName);
+					expect(res.body.memberSince).to.exist;
+
+					return User.findByUsername(user.username);
+				})
+				.then(res => {
+					expect(res.email).to.equal(updatedProfile.email);
+					expect(res.displayName).to.equal(updatedProfile.displayName);
+					expect(res.passwordHash).to.exist;
+					expect(res.created).to.exist;
+					done();
+				})
+				.catch(done);			
+		});
+
+		it('returns 400 if validation fails', done => {
+			const updatedProfile = {
+				email: 'lol - not an e-mail!',
+				displayName: 'Doc Holiday'
+			};
+
+			request
+				.post('/api/1.0/account/login')
+				.send({ username: user.username, password: user.password })
+				.expect(200)
+				.then(() => {
+					return request
+						.put(updateRoute)
+						.send(updatedProfile)
+						.expect(400);
+				})
+				.then(res => {
+					expect(res.body.errorId).to.equal('err.validation');
+					done();
+				})
+				.catch(done);
+		});
+
+		it('returns 400 if new e-mail address is taken', done => {
+			const updatedProfile = {
+				email: 'new@addr.ess',
+				displayName: 'Doc Holiday'
+			};
+
+			const otherUser = new User({
+				username: 'OtherUser',
+				displayName: 'Other User',
+				email: updatedProfile.email
+			});
+
+			otherUser.password = '(*(2kjlfkwomglILIO2345';
+
+			otherUser.save()
+				.then(() => {
+					return request
+						.post('/api/1.0/account/login')
+						.send({ username: user.username, password: user.password })
+						.expect(200);
+				})
+				.then(() => {
+					return request
+						.put(updateRoute)
+						.send(updatedProfile)
+						.expect(400);
+				})
+				.then(res => {
+					expect(res.body.errorId).to.equal('err.validation.emailTaken');
+					done();
+				})
+				.catch(done);
+		});
+
+		it('returns 401 if user is not logged in', done => {
+			const updatedProfile = {
+				email: 'new@addr.ess',
+				displayName: 'Doc Holiday'
+			};
+
+			request
+				.put(updateRoute)
+				.send(updatedProfile)
+				.expect(401)
+				.then(res => {
+					expect(res.body.errorId).to.equal('err.notAuthorized');
+					done();
+				})
+				.catch(done);
+		});
+
+		it('returns 401 if user does not own the profile', done => {
+			const updatedProfile = {
+				email: 'new@addr.ess',
+				displayName: 'Doc Holiday'
+			};
+
+			const otherUser = new User({
+				username: 'OtherUser',
+				displayName: 'Other User',
+				email: 'other@guy.email.org'
+			});
+
+			otherUser.password = '@fos))808..1';
+
+			otherUser.save()
+				.then(() => {
+					return request
+						.post('/api/1.0/account/login')
+						.send({ username: user.username, password: user.password })
+						.expect(200);
+				})
+				.then(() => {
+					return request
+						.put(`/api/1.0/users/${otherUser.username}/`)
+						.send(updatedProfile)
+						.expect(401);
+				})
+				.then(res => {
+					expect(res.body.errorId).to.equal('err.notAuthorized');
+					done();
+				})
+				.catch(done);
+		});
+
+		it('returns 401 if profile does not exist', done => {
+			const updatedProfile = {
+				email: 'new@addr.ess',
+				displayName: 'Doc Holiday'
+			};
+
+			request
+				.post('/api/1.0/account/login')
+				.send({ username: user.username, password: user.password })
+				.expect(200)
+				.then(() => {
+					return request
+						.put('/api/1.0/users/NoOneSpecial/')
+						.send(updatedProfile)
 						.expect(401);
 				})
 				.then(res => {

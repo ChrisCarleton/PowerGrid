@@ -19,6 +19,19 @@ const changePasswordValidation = Joi.object().keys({
 	newPassword: Joi.string().regex(PASSWORD_STRENGTH_VALIDATION).required()
 });
 
+const updateProfileValidation = Joi.object().keys({
+	email: Joi.string().email().max(100).required(),
+	displayName: Joi.string().max(100).required()
+});
+
+function findUserWithEmailUnlessMatch(email, match) {
+	if (email.toLowerCase() === match.toLowerCase()) {
+		return Promise.resolve(null);
+	}
+
+	return User.findByEmail(email);
+}
+
 export function createProfile(req, res) {
 	const validation = Joi.validate(req.body, createAccountValidation);
 	if (validation.error) {
@@ -178,6 +191,44 @@ export function resetPassword() {
 
 }
 
-export function updateProfile() {
+export function updateProfile(req, res) {
+	const validation = Joi.validate(req.body, updateProfileValidation);
+	if (validation.error) {
+		req.log.trace('Update profile validation failed', validation);
+		return validationFailed(res);
+	}
 
+	findUserWithEmailUnlessMatch(req.body.email, req.profile.email)
+		.then(account => {
+			if (account) {
+				throw EMAIL_IN_USE;
+			}
+
+			req.profile.email = req.body.email;
+			req.profile.displayName = req.body.displayName;
+			return req.profile.save();
+		})
+		.then(profile => {
+			res.json(profile);
+		})
+		.catch(err => {
+			if (err === EMAIL_IN_USE) {
+				return validationFailed(
+					res,
+					ErrorIds['err.validation.emailTaken'],
+					'E-mail is already taken.',
+					'An account already exists with this e-mail address. Do you have another account on this site?');
+			}
+
+			req.log.error(
+				'An error occurred while attempting to update user profile for ',
+				req.profile.username,
+				err);
+
+			serverError(
+				res,
+				ErrorIds['err.server.general'],
+				'An error occurred while trying to save changes to the profile.',
+				'Changes could not be saved at this time. Please try again later.');
+		});
 }
