@@ -22,6 +22,8 @@ const MongoStore = connectMongo(session);
 log.debug('Connecting to MongoDB at', config.database);
 database.connect(config.database);
 
+app.use('/public', express.static(path.join(__dirname, '../public')));
+app.use(bodyParser.json({ inflate: true }));
 app.use(session({
 	cookie: {
 		maxAge: 259200000	// 3 Days
@@ -36,15 +38,12 @@ app.use(session({
 		ttl: 259200
 	})
 }));
-app.use(bodyParser.json({ inflate: true }));
 security(app);
 
 app.use(expressLogger({
 	logger: log,
 	excludes: [ 'referer', 'user-agent', 'body', 'short-body', 'response-hrtime', 'req', 'res', 'res-headers' ]
 }));
-
-app.use('/public', express.static(path.join(__dirname, '../public')));
 
 const routeLoaders = glob.sync(path.join(__dirname, 'routes') + '**/*.routes.js');
 routeLoaders.forEach(routeLoader => {

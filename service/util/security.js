@@ -1,8 +1,12 @@
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
+import log from '../logger';
 import User from '../data/user.model';
 
 export default function(app) {
+
+	app.use(passport.initialize());
+	app.use(passport.session());
 
 	passport.use(
 		new LocalStrategy((username, password, done) => {
@@ -26,15 +30,13 @@ export default function(app) {
 		done(null, user.username);
 	});
 
-	passport.deserializeUser((id, done) => {
-		User.findByUsername(id)
+	passport.deserializeUser((username, done) => {
+		log.debug('Deserializing user', username);
+		User.findByUsername(username)
 			.then(user => {
 				done(null, user);
 			})
 			.catch(done);
 	});
-
-	app.use(passport.initialize());
-	app.use(passport.session());
 
 }
