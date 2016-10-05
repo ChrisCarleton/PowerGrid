@@ -10,11 +10,16 @@ const UserSchema = new database.Schema({
 		match: /^[a-z0-9_\-\.]+$/i,
 		unique: true
 	},
+	displayName: {
+		type: String,
+		required: true,
+		maxlength: 100
+	},
 	email: {
 		type: String,
 		required: true,
+		maxlength: 100,
 		lowercase: true,
-		maxlength: 150,
 		match: /^.+@.+\..+$/,
 		unique: true
 	},
@@ -22,23 +27,23 @@ const UserSchema = new database.Schema({
 		type: String,
 		required: true
 	},
-	displayName: {
-		type: String,
-		required: true,
-		maxlength: 60
-	},
 	created: {
 		type: Date,
 		default: Date.now()
 	}
 });
 
-UserSchema.statics.findByUsername = function(username) {
-	return this.model.findOne({ username: username.toLowerCase() });
+UserSchema.methods.validatePassword = function(password) {
+	return bcrypt.compareSync(password, this.passwordHash);
 };
 
-UserSchema.statics.findByEmail = function(email) {
-	return this.model.findOne({ email: email.toLowerCase() });
+UserSchema.methods.toJSON = function() {
+	return {
+		username: this.username,
+		email: this.email,
+		displayName: this.displayName,
+		memberSince: this.created
+	};
 };
 
 UserSchema.virtual('password').set(function(password) {
@@ -47,8 +52,13 @@ UserSchema.virtual('password').set(function(password) {
 	this.passwordHash = hash;
 });
 
-UserSchema.methods.validatePassword = function(password) {
-	return bcrypt.compareSync(password, this.passwordHash);
+UserSchema.statics.findByUsername = function(username) {
+	return this.findOne({ username: username.toLowerCase() });
 };
 
-export default database.model('User', UserSchema);
+UserSchema.statics.findByEmail = function(email) {
+	return this.findOne({ email: email.toLowerCase() });
+};
+
+const model = database.model('User', UserSchema);
+export default model;

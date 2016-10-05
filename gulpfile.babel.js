@@ -38,6 +38,9 @@ gulp.task('cover-tests', ['lint'], () => {
 
 gulp.task('test', ['cover-tests'], () => {
 	process.env.NODE_ENV = 'test';
+	process.env.POWERGRID_LOG_FILE = 'logs/mocha.log';
+	process.env.POWERGRID_LOG_LEVEL = 'debug';
+
 	return gulp
 		.src(['tests/**/*.tests.js'])
 		.pipe(mocha())
