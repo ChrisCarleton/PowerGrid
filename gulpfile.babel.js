@@ -1,4 +1,5 @@
 import clean from 'gulp-clean';
+import coveralls from 'gulp-coveralls';
 import eslint from 'gulp-eslint';
 import gulp from 'gulp';
 import gls from 'gulp-live-server';
@@ -45,6 +46,12 @@ gulp.task('test', ['cover-tests'], () => {
 		.src(['tests/**/*.tests.js'])
 		.pipe(mocha())
 		.pipe(istanbul.writeReports({ reporters: ['lcov'] }));
+});
+
+gulp.task('report-coverage', ['test'], () => {
+	return gulp
+		.src(['coverage/lcov.info'])
+		.pipe(coveralls());
 });
 
 gulp.task('bundle', ['lint'], () => {

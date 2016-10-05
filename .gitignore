@@ -39,3 +39,6 @@ jspm_packages
 # Transpiled and minified files
 public/bundle.js
 public/bundle.min.js
+
+# Unencrypted .coveralls.yml file
+.coveralls.yml
