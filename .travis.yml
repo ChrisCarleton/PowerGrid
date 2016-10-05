@@ -1,0 +1,6 @@
+language: node_js
+before_script:
+  - npm install -g gulp --loglevel error
+script:
+  - npm install --loglevel error
+  - gulp test
