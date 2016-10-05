@@ -18,7 +18,7 @@ const webpackConfig = require(
 
 gulp.task('lint', () => {
 	return gulp
-		.src(['service/**/*.js', 'web/**/*.js', 'web/**/*.jsx'])
+		.src(['service/**/*.js', 'web/**/*.js', 'web/**/*.jsx', 'tests/**/*.js'])
 		.pipe(eslint())
 		.pipe(eslint.format())
 		.pipe(eslint.failOnError());

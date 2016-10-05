@@ -27,7 +27,7 @@ describe('User data model', () => {
 
 		clearDb(done);
 	});
-	
+
 	describe('validation', () => {
 		it('will save valid users', done => {
 			const model = new User(user);
@@ -66,7 +66,7 @@ describe('User data model', () => {
 				.then(() => {
 					user.email = 'different@gmail.com';
 					const secondModel = new User(user);
-					return secondModel.save()
+					return secondModel.save();
 				})
 				.then(() => {
 					done('Duplicate username was saved.');
@@ -99,7 +99,7 @@ describe('User data model', () => {
 				.then(() => {
 					user.username = 'DifferentUser';
 					const secondModel = new User(user);
-					return secondModel.save()
+					return secondModel.save();
 				})
 				.then(() => {
 					done('Duplicate e-mail was saved.');
@@ -192,7 +192,7 @@ describe('User data model', () => {
 					expect(result.email).to.equal(savedUser.email);
 					expect(result.passwordHash).to.equal(savedUser.passwordHash);
 					expect(result.displayName).to.equal(savedUser.displayName);
-					done();					
+					done();
 				})
 				.catch(done);
 		});
