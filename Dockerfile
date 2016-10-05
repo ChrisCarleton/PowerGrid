@@ -10,6 +10,4 @@ RUN npm install -g --loglevel error gulp
 COPY . /usr/src/app
 
 EXPOSE 28988
-ENTRYPOINT ["npm","run"]
-
-CMD ["start"]
+CMD ["npm","run","start"]
