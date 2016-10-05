@@ -5,7 +5,9 @@
   "description": "It's the power grid game.",
   "main": "service/index.js",
   "scripts": {
-    "test": "gulp test"
+    "start": "node service/index.js | bunyan",
+    "test": "gulp test",
+    "dev": "gulp | bunyan"
   },
   "repository": {
     "type": "git",
