@@ -1,9 +1,6 @@
 import { app } from '../../service/server';
-import database from '../../service/data/database';
 import { expect } from 'chai';
-import Promise from 'bluebird';
 import supertest from 'supertest-as-promised';
-import sinon from 'sinon';
 import User from '../../service/data/user.model';
 
 describe('Account controller', () => {
@@ -28,7 +25,7 @@ describe('Account controller', () => {
 				.post('/api/1.0/users/')
 				.send(user)
 				.expect(200)
-				.then(res => {
+				.then(() => {
 					return User.findByUsername(user.username);
 				})
 				.then(result => {
@@ -71,7 +68,7 @@ describe('Account controller', () => {
 				.expect(400)
 				.then(res => {
 					expect(res.body.errorId).to.equal('err.validation');
-					done();					
+					done();
 				})
 				.catch(done);
 		});
@@ -160,7 +157,7 @@ describe('Account controller', () => {
 				.expect(401)
 				.then(res => {
 					expect(res.body.errorId).to.equal('err.notAuthorized');
-					done();					
+					done();
 				})
 				.catch(done);
 		});
@@ -172,7 +169,7 @@ describe('Account controller', () => {
 				.expect(401)
 				.then(res => {
 					expect(res.body.errorId).to.equal('err.notAuthorized');
-					done();					
+					done();
 				})
 				.catch(done);
 		});
@@ -213,7 +210,7 @@ describe('Account controller', () => {
 				.then(() => {
 					return request
 						.get('/api/1.0/account/me/')
-						.expect(401);					
+						.expect(401);
 				})
 				.then(() => done())
 				.catch(done);
@@ -280,7 +277,7 @@ describe('Account controller', () => {
 					expect(res.body.email).to.equal(user.email);
 					expect(res.body.displayName).to.equal(user.displayName);
 					expect(res.body.memberSince).to.exist;
-					done();					
+					done();
 				})
 				.catch(done);
 		});
@@ -317,7 +314,7 @@ describe('Account controller', () => {
 					return request
 						.put(passwordRoute)
 						.send({ oldPassword: user.password, newPassword: newPassword })
-						.expect(200)
+						.expect(200);
 				})
 				.then(() => {
 					return User.findByUsername(user.username);
@@ -361,7 +358,7 @@ describe('Account controller', () => {
 					return request
 						.put(`/api/1.0/users/${otherUser.username}/password`)
 						.send({ oldPassword: otherUser.password, newPassword: '133t.H@x0rz' })
-						.expect(401)
+						.expect(401);
 				})
 				.then(res => {
 					expect(res.body.errorId).to.equal('err.notAuthorized');
@@ -593,7 +590,7 @@ describe('Account controller', () => {
 					expect(res.created).to.exist;
 					done();
 				})
-				.catch(done);			
+				.catch(done);
 		});
 
 		it('returns 400 if validation fails', done => {

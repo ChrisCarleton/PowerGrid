@@ -1,4 +1,3 @@
-import config from '../service/config';
 import database from '../service/data/database';
 
 let server;
