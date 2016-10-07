@@ -1,4 +1,5 @@
 import { flashError, flashInfo } from '../../actions/flash-message.actions';
+import Formsy from 'formsy-react';
 import React from 'react';
 import request from 'superagent';
 import store from '../../store';
@@ -25,10 +26,10 @@ class Login extends React.Component {
 		this.setState(Object.assign(this.state, { password: event.target.value }));
 	}
 
-	onLoginClicked() {
+	onSubmit(model) {
 		request
 			.post('/api/1.0/account/login/')
-			.send(this.state)
+			.send(model)
 			.end((err, res) => {
 				if (err) {
 					return store.dispatch(flashError(res.body.title, res.body.description));
@@ -42,14 +43,15 @@ class Login extends React.Component {
 		return (
 			<div>
 				<h2>Login</h2>
-				<form>
+				<Formsy.Form onValidSubmit={ this.onSubmit }>
 					User name:<br />
 					<input type="text" id="username" name="username" onChange={ this.onUsernameChanged } value={ this.state.username } /><br />
 
 					Password:<br />
 					<input type="password" id="password" name="password" onChange={ this.onPasswordChanged } value={ this.state.password } /><br />
-					<button type="button" onClick={ this.onLoginClicked }>Log In</button>
-				</form>
+
+					<button type="submit">Log In</button>
+				</Formsy.Form>
 			</div>);
 	}
 }

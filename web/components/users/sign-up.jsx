@@ -1,44 +1,38 @@
+import Formsy from 'formsy-react';
 import React from 'react';
+import TextBox from '../forms/text-box';
 
 class SignUp extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			username: '',
-			password: '',
-			displayName: '',
-			email: ''
-		};
 	}
 
-	onUsernameChanged(/*event*/) {
+	onSubmit(/*model, resetForm, invalidateForm */) {
 
 	}
-
-	// onPasswordChanged(event) {
-
-	// }
-
-	// onEmailChanged(event) {
-
-	// }
-
-	// onDisplayNameChanged(event) {
-
-	// }
 
 	render() {
 		return (
 			<div>
 				<h2>Sign Up</h2>
-				<form>
-					User name:<br />
-					<input type="text" id="username" name="username" onChange={ this.onUsernameChanged } value={ this.state.username } />
-					<br />
+				<Formsy.Form onValidSubmit={ this.onSubmit }>
+					<TextBox
+						id="username"
+						name="username"
+						label="User name"
+						validations={ {
+							matchRegexp: /^[a-z0-9_\-\.]+$/i,
+							maxLength: 60
+						} }
+						validationErrors={ {
+							matchRegexp: 'User names can consist of letters, numbers, underscores, dots, and hyphens.',
+							maxLength: 'User names cannot be longer than 60 characters.'
+						} }
+						value=""
+						required />
 
-					Password:<br />
-				</form>
+					<button type="submit">Sign Up</button>
+				</Formsy.Form>
 			</div>);
 	}
 }
