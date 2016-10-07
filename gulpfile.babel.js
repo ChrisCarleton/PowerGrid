@@ -5,6 +5,7 @@ import gulp from 'gulp';
 import gls from 'gulp-live-server';
 import istanbul from 'gulp-istanbul';
 import mocha from 'gulp-mocha';
+import path from 'path';
 import rename from 'gulp-rename';
 import uglify from 'gulp-uglify';
 import util from 'gulp-util';
@@ -85,7 +86,7 @@ gulp.task('dev-server', done => {
 	});
 
 	new WebpackDevServer(webpack(webpackConfig), {
-		publicPath: '/public/',
+		publicPath: '/public',
 		stats: {
 			colors: true
 		},

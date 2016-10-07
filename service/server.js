@@ -52,14 +52,12 @@ routeLoaders.forEach(routeLoader => {
 	require(routeLoader)(app);
 });
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
 	const state = Object.assign(
 		initialState,
 		{
 			user: req.user ? req.user.toJSON() : null
 		});
-
-	req.log.debug('Sending initial state', state, 'based on', initialState);
 
 	res.send(renderHomePage({
 		hostname: config.hostname,
