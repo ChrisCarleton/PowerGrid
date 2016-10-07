@@ -5,6 +5,7 @@ import express from 'express';
 import expressLogger from 'express-bunyan-logger';
 import glob from 'glob';
 import http from 'http';
+import initialState from './util/initial-state';
 import log from './logger';
 import connectMongo from 'connect-mongo';
 import path from 'path';
@@ -51,10 +52,17 @@ routeLoaders.forEach(routeLoader => {
 	require(routeLoader)(app);
 });
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
+	const state = Object.assign(
+		initialState,
+		{
+			user: req.user ? req.user.toJSON() : null
+		});
+
 	res.send(renderHomePage({
 		hostname: config.hostname,
-		isProduction: isProduction
+		isProduction: isProduction,
+		initialState: JSON.stringify(state)
 	}));
 });
 

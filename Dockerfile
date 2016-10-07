@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 RUN npm install --loglevel error
 
-RUN npm install -g --loglevel error gulp
+RUN npm install -g --loglevel error gulp bunyan
 
 COPY . /usr/src/app
 
