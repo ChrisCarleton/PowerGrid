@@ -1,6 +1,7 @@
 import FlashMessageDisplay from './flash-message-display';
-import { IndexLink, Link } from 'react-router';
+import { IndexLink } from 'react-router';
 import React from 'react';
+import UserDropdownAware from './user-dropdown-aware';
 
 class Nav extends React.Component {
 	render() {
@@ -9,11 +10,8 @@ class Nav extends React.Component {
 				<h1>Power Grid</h1>
 				<div id="nav-bar">
 					<IndexLink to="/">Home</IndexLink>&nbsp;
-					<div>
-						<Link to="/login">Login</Link>&nbsp;or&nbsp;
-						<Link to="/signup">Sign Up</Link>
-					</div>
 				</div>
+				<UserDropdownAware />
 				<FlashMessageDisplay />
 				{ this.props.children }
 			</div>);

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { browserHistory } from 'react-router';
 import { flashError } from '../../actions/flash-message.actions';
 import Formsy from 'formsy-react';
@@ -22,12 +23,7 @@ class SignUp extends React.Component {
 		this.setState(Object.assign({}, this.state, { submitDisabled: true }));
 		request
 			.post('/api/1.0/users/')
-			.send({
-				username: model.username,
-				password: model.password,
-				displayName: model.displayName,
-				email: model.email
-			})
+			.send(_.pick(model, ['username', 'password', 'email', 'displayName']))
 			.end((err, res) => {
 				this.setState(Object.assign({}, this.state, { submitDisabled: false }));
 				if (!err) {

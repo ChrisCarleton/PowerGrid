@@ -1,29 +1,17 @@
-import { flashError, flashInfo } from '../../actions/flash-message.actions';
+import { browserHistory } from 'react-router';
+import { flashError } from '../../actions/flash-message.actions';
 import Formsy from 'formsy-react';
 import React from 'react';
 import request from 'superagent';
+import { signInUser } from '../../actions/user.actions';
 import store from '../../store';
+import TextBox from '../forms/text-box';
 
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			username: '',
-			password: ''
-		};
-
-		this.onUsernameChanged = this.onUsernameChanged.bind(this);
-		this.onPasswordChanged = this.onPasswordChanged.bind(this);
-		this.onLoginClicked = this.onLoginClicked.bind(this);
-	}
-
-	onUsernameChanged(event) {
-		this.setState(Object.assign(this.state, { username: event.target.value }));
-	}
-
-	onPasswordChanged(event) {
-		this.setState(Object.assign(this.state, { password: event.target.value }));
+		this.onSubmit = this.onSubmit.bind(this);
 	}
 
 	onSubmit(model) {
@@ -32,10 +20,13 @@ class Login extends React.Component {
 			.send(model)
 			.end((err, res) => {
 				if (err) {
-					return store.dispatch(flashError(res.body.title, res.body.description));
+					return store.dispatch(flashError(
+						res.body.title || 'A general error occurred and you could not be logged in. Please try again later.',
+						res.body.description));
 				}
 
-				store.dispatch(flashInfo('Log in was successful!'));
+				store.dispatch(signInUser(res.body));
+				browserHistory.push('/');
 			});
 	}
 
@@ -44,11 +35,19 @@ class Login extends React.Component {
 			<div>
 				<h2>Login</h2>
 				<Formsy.Form onValidSubmit={ this.onSubmit }>
-					User name:<br />
-					<input type="text" id="username" name="username" onChange={ this.onUsernameChanged } value={ this.state.username } /><br />
+					<TextBox
+						id="username"
+						name="username"
+						label="User name"
+						value=""
+						required />
 
-					Password:<br />
-					<input type="password" id="password" name="password" onChange={ this.onPasswordChanged } value={ this.state.password } /><br />
+					<TextBox
+						id="password"
+						name="password"
+						label="Password"
+						value=""
+						required />
 
 					<button type="submit">Log In</button>
 				</Formsy.Form>
