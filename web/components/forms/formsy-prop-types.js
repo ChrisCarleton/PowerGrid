@@ -1,10 +1,10 @@
 import { PropTypes } from 'react';
 
 export default {
-	getErrorMessage: PropTypes.function.required,
-	getValue: PropTypes.function.required,
-	isPristine: PropTypes.function.required,
-	isRequired: PropTypes.function.required,
-	setValue: PropTypes.function.required,
-	showRequired: PropTypes.function.required
+	getErrorMessage: PropTypes.func.isRequired,
+	getValue: PropTypes.func.isRequired,
+	isPristine: PropTypes.func.isRequired,
+	isRequired: PropTypes.func.isRequired,
+	setValue: PropTypes.func.isRequired,
+	showRequired: PropTypes.func.isRequired
 };

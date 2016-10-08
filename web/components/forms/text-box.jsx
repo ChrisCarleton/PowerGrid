@@ -1,5 +1,4 @@
 import { Decorator as FormsyElement } from 'formsy-react';
-import formsyPropTypes from './formsy-prop-types';
 import React from 'react';
 
 @FormsyElement()
@@ -18,6 +17,7 @@ class TextBox extends React.Component {
 				<span>{ this.props.label }{ this.props.isRequired() ? '*' : null }:</span>
 				<br />
 				<input
+					type={ this.props.type || 'text' }
 					value={ this.state.value }
 					onChange={ e => this.setState({ value: e.target.value }) }
 					onBlur={ () => this.props.setValue(this.state.value) } />
@@ -29,8 +29,8 @@ class TextBox extends React.Component {
 }
 
 TextBox.propTypes = Object.assign({
-	label: React.PropTypes.string.required
-},
-formsyPropTypes);
+	label: React.PropTypes.string.isRequired,
+	type: React.PropTypes.oneOf(['text', 'password'])
+});
 
 export default TextBox;
