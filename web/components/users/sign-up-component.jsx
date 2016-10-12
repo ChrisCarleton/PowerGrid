@@ -5,8 +5,6 @@ import Formsy from 'formsy-react';
 import React from 'react';
 import TextBox from '../forms/text-box';
 import request from 'superagent';
-import { signInUser } from '../../actions/user.actions';
-import store from '../../store';
 
 class SignUp extends React.Component {
 	constructor(props) {
@@ -29,7 +27,7 @@ class SignUp extends React.Component {
 				if (!err) {
 					// Account was created and user was logged in.
 					resetForm();
-					store.dispatch(signInUser(res.body));
+					this.props.onUserSignedUp(res.body);
 					return browserHistory.push('/');
 				}
 
