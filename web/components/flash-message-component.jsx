@@ -1,6 +1,4 @@
-import { clearFlashMessage } from '../actions/flash-message.actions';
 import React from 'react';
-import store from '../store';
 
 class FlashMessage extends React.Component {
 	constructor(props) {
@@ -21,17 +19,13 @@ class FlashMessage extends React.Component {
 		}
 	}
 
-	clearMessage() {
-		store.dispatch(clearFlashMessage());
-	}
-
 	render() {
 		if ( this.props.title ) {
 			return (
 				<div className={ this.getClassName() }>
 					<p>
 						<strong>{ this.props.title }</strong>&nbsp;{ this.props.description }&nbsp;
-						<button onClick={ this.clearMessage }>Ok</button>
+						<button onClick={ this.props.onClearMessage }>Ok</button>
 					</p>
 				</div>);
 		}
@@ -43,7 +37,8 @@ class FlashMessage extends React.Component {
 FlashMessage.propTypes = {
 	messageType: React.PropTypes.oneOf(['info', 'warn', 'error']),
 	title: React.PropTypes.string,
-	description: React.PropTypes.string
+	description: React.PropTypes.string,
+	onClearMessage: React.PropTypes.func.isRequired
 };
 
 export default FlashMessage;
