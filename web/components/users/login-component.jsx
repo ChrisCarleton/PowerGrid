@@ -1,10 +1,7 @@
 import { browserHistory } from 'react-router';
-import { flashError } from '../../actions/flash-message.actions';
 import Formsy from 'formsy-react';
 import React from 'react';
 import request from 'superagent';
-import { signInUser } from '../../actions/user.actions';
-import store from '../../store';
 import TextBox from '../forms/text-box';
 
 class Login extends React.Component {
@@ -20,13 +17,13 @@ class Login extends React.Component {
 			.send(model)
 			.end((err, res) => {
 				if (err) {
-					return store.dispatch(flashError(
+					return this.props.flashError(
 						res.body.title || 'A general error occurred and you could not be logged in. Please try again later.',
-						res.body.description));
+						res.body.description);
 				}
 
 				resetForm();
-				store.dispatch(signInUser(res.body));
+				this.props.onUserSignedIn(res.body);
 				browserHistory.push('/');
 			});
 	}
@@ -56,5 +53,10 @@ class Login extends React.Component {
 			</div>);
 	}
 }
+
+Login.propTypes = {
+	onUserSignedIn: React.PropTypes.func.isRequired,
+	flashError: React.PropTypes.func.isRequired
+};
 
 export default Login;
