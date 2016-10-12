@@ -1,11 +1,11 @@
+import config from '../config';
 import { ErrorIds, notAuthorized, serverError, validationFailed } from './errors.controller';
 import Joi from 'joi';
 import User from '../data/user.model';
 
 const USERNAME_IN_USE = 'username-taken';
 const EMAIL_IN_USE = 'email-taken';
-// TODO: Make this a thing.
-const PASSWORD_STRENGTH_VALIDATION = /^.*$/;
+const PASSWORD_STRENGTH_VALIDATION = config.passwordStrengthRegex;
 
 const createAccountValidation = Joi.object().keys({
 	username: Joi.string().regex(/^[a-z0-9_\-\.]+$/i).max(60).required(),

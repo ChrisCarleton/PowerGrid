@@ -62,6 +62,7 @@ app.get('*', (req, res) => {
 	res.send(renderHomePage({
 		hostname: config.hostname,
 		isProduction: isProduction,
+		passwordStrengthRegex: config.passwordStrengthRegex.toString(),
 		initialState: JSON.stringify(state)
 	}));
 });

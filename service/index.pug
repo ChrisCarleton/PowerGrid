@@ -1,11 +1,13 @@
 doctype html
 html
 	head
+		link(rel="shortcut icon",href="/public/favicon.ico",type="image/x-icon")
 		title Power Grid
 	body
 		div#application
 
 		script(type="text/javascript")
+			| window.appSettings = { hostname: '#{hostname}', passwordStrengthRegex: !{passwordStrengthRegex} };
 			| window.initialState = !{initialState};
 
 		if isProduction
