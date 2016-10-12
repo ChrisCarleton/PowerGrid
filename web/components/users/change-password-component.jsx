@@ -1,32 +1,29 @@
 import _ from 'lodash';
-import { flashError, flashInfo } from '../../actions/flash-message.actions';
 import Formsy from 'formsy-react';
 import React from 'react';
 import request from 'superagent';
 import SecurePage from '../secure-page';
 import TextBox from '../forms/text-box';
-import store from '../../store';
 
 class ChangePassword extends React.Component {
 	constructor(props) {
 		super(props);
+		this.onSubmit = this.onSubmit.bind(this);
 	}
 
 	onSubmit(model, resetForm) {
-		const state = store.getState();
 		request
-			.put(`/api/1.0/users/${state.user.username}/password/`)
+			.put(`/api/1.0/users/${this.props.username}/password/`)
 			.send(_.pick(model, ['oldPassword', 'newPassword']))
 			.end((err, res) => {
 				if (err) {
-					return store.dispatch(
-						flashError(
+					return this.props.flashError(
 							res.body.title || 'A general server error has occurred and your password could not be changed. Please try again later.',
-							res.body.description));
+							res.body.description);
 				}
 
 				resetForm();
-				store.dispatch(flashInfo('Your password was successfully changed.'));
+				this.props.flashInfo('Your password was successfully changed.');
 			});
 	}
 
@@ -76,5 +73,11 @@ class ChangePassword extends React.Component {
 			</SecurePage>);
 	}
 }
+
+ChangePassword.propTypes = {
+	username: React.PropTypes.string.isRequired,
+	flashError: React.PropTypes.func.isRequired,
+	flashInfo: React.PropTypes.func.isRequired
+};
 
 export default ChangePassword;
