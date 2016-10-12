@@ -1,7 +1,7 @@
 import FlashMessageDisplay from './flash-message-display';
 import { IndexLink } from 'react-router';
 import React from 'react';
-import UserDropdownState from './user-dropdown-state';
+import UserDropdown from './user-dropdown';
 
 class Nav extends React.Component {
 	render() {
@@ -11,7 +11,7 @@ class Nav extends React.Component {
 				<div id="nav-bar">
 					<IndexLink to="/">Home</IndexLink>&nbsp;
 				</div>
-				<UserDropdownState />
+				<UserDropdown />
 				<FlashMessageDisplay />
 				{ this.props.children }
 			</div>);

@@ -1,9 +1,6 @@
 import { browserHistory, Link } from 'react-router';
-import { flashError } from '../actions/flash-message.actions';
 import React from 'react';
 import request from 'superagent';
-import { signOutUser } from '../actions/user.actions';
-import store from '../store';
 
 class UserDropdown extends React.Component {
 	constructor(props) {
@@ -15,12 +12,12 @@ class UserDropdown extends React.Component {
 			.post('/api/1.0/account/logout/')
 			.end((err, res) => {
 				if (err) {
-					return flashError(
+					return this.props.flashError(
 						res.body.title || 'A general error occurred and you could not be logged out.',
 						res.body.description);
 				}
 
-				store.dispatch(signOutUser());
+				this.props.onSignOutUser();
 				browserHistory.push('/');
 			});
 	}
@@ -45,7 +42,9 @@ class UserDropdown extends React.Component {
 }
 
 UserDropdown.propTypes = {
-	user: React.PropTypes.object
+	user: React.PropTypes.object,
+	onSignOutUser: React.PropTypes.func.isRequired,
+	flashError: React.PropTypes.func.isRequired
 };
 
 export default UserDropdown;
