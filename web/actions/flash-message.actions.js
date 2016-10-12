@@ -1,3 +1,9 @@
+export function clearFlashMessage() {
+	return {
+		type: 'CLEAR_FLASH_MESSAGE'
+	};
+}
+
 export function flashInfo(title, description) {
 	return {
 		type: 'FLASH_MESSAGE',

@@ -6,7 +6,10 @@ const config = {
 	logLevel: process.env.POWERGRID_LOG_LEVEL || 'debug',
 	logFile: process.env.POWERGRID_LOG_FILE,
 
-	sessionSecret: process.env.POWERGRID_SESSION_SECRET || 'Eyes-Only'
+	sessionSecret: process.env.POWERGRID_SESSION_SECRET || 'Eyes-Only',
+
+	// 1 Letter + 1 number + 1 special character; minimum length is 8.
+	passwordStrengthRegex: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&\.\-)(`/\\,:;'"\[\]\+{}\|]).{7,}$/
 };
 
 config.database = process.env.POWERGRID_DATABASE || `mongodb://localhost:27017/powergrid_${config.env}`;

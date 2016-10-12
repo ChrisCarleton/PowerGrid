@@ -14,7 +14,7 @@ class Login extends React.Component {
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
-	onSubmit(model) {
+	onSubmit(model, resetForm) {
 		request
 			.post('/api/1.0/account/login/')
 			.send(model)
@@ -25,6 +25,7 @@ class Login extends React.Component {
 						res.body.description));
 				}
 
+				resetForm();
 				store.dispatch(signInUser(res.body));
 				browserHistory.push('/');
 			});
@@ -46,6 +47,7 @@ class Login extends React.Component {
 						id="password"
 						name="password"
 						label="Password"
+						type="password"
 						value=""
 						required />
 

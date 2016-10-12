@@ -30,7 +30,8 @@ class UserDropdown extends React.Component {
 			return (
 				<div>
 					Welcome { this.props.user.displayName || this.props.user.username }&nbsp;
-					My Profile
+					<Link to="/profile">My Profile</Link>&nbsp;
+					<Link to="/changePassword">Change My Password</Link>&nbsp;
 					<a href="#" onClick={ this.signOut }>Sign Out</a>
 				</div>);
 		}

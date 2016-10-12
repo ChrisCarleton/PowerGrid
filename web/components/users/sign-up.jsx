@@ -75,6 +75,12 @@ class SignUp extends React.Component {
 						name="password"
 						label="Password"
 						value=""
+						validations={ {
+							matchRegexp: window.appSettings.passwordStrengthRegex
+						} }
+						validationErrors={ {
+							matchRegexp: 'Password does not meet strength requirements. It must contain a letter, a number, a special character and be at least 7 characters long.'
+						} }
 						required />
 
 					<TextBox

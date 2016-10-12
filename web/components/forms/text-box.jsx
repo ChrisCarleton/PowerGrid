@@ -11,6 +11,10 @@ class TextBox extends React.Component {
 		};
 	}
 
+	componentWillReceiveProps(newProps) {
+		this.setState({ value: newProps.getValue() });
+	}
+
 	render() {
 		return (
 			<div>

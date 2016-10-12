@@ -7,6 +7,7 @@ html
 		div#application
 
 		script(type="text/javascript")
+			| window.appSettings = { hostname: '#{hostname}', passwordStrengthRegex: !{passwordStrengthRegex} };
 			| window.initialState = !{initialState};
 
 		if isProduction

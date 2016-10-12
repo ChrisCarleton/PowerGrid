@@ -11,8 +11,8 @@ const mapDispatchToProps = (/* dispatch */) => {
 	return {};
 };
 
-const UserDropdownAware = connect(
+const UserDropdownState = connect(
 	mapStateToProps,
 	mapDispatchToProps)(UserDropdown);
 
-export default UserDropdownAware;
+export default UserDropdownState;
