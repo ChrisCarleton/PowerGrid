@@ -3,17 +3,27 @@ import { IndexLink } from 'react-router';
 import React from 'react';
 import UserDropdown from './user-dropdown';
 
+import { Navbar } from 'react-bootstrap';
+
 class Nav extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1>Power Grid</h1>
-				<div id="nav-bar">
-					<IndexLink to="/">Home</IndexLink>&nbsp;
+				<Navbar>
+					<Navbar.Header>
+						<Navbar.Brand>
+							<IndexLink to="/">Power Grid</IndexLink>
+						</Navbar.Brand>
+						<Navbar.Toggle />
+					</Navbar.Header>
+					<Navbar.Collapse>
+						<UserDropdown />
+					</Navbar.Collapse>
+				</Navbar>
+				<div className="container">
+					<FlashMessage />
+					{ this.props.children }
 				</div>
-				<UserDropdown />
-				<FlashMessage />
-				{ this.props.children }
 			</div>);
 	}
 }
