@@ -4,6 +4,8 @@ import React from 'react';
 import request from 'superagent';
 import TextBox from '../forms/text-box';
 
+import { Button, ButtonToolbar, Col, PageHeader, Row } from 'react-bootstrap';
+
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
@@ -31,25 +33,31 @@ class Login extends React.Component {
 	render() {
 		return (
 			<div>
-				<h2>Login</h2>
-				<Formsy.Form onValidSubmit={ this.onSubmit }>
-					<TextBox
-						id="username"
-						name="username"
-						label="User name"
-						value=""
-						required />
+				<PageHeader>Login</PageHeader>
+				<Row>
+					<Col lg={ 4 } sm={ 12 }>
+						<Formsy.Form onValidSubmit={ this.onSubmit }>
+							<TextBox
+								id="username"
+								name="username"
+								label="User name"
+								value=""
+								required />
 
-					<TextBox
-						id="password"
-						name="password"
-						label="Password"
-						type="password"
-						value=""
-						required />
+							<TextBox
+								id="password"
+								name="password"
+								label="Password"
+								type="password"
+								value=""
+								required />
 
-					<button type="submit">Log In</button>
-				</Formsy.Form>
+							<ButtonToolbar>
+								<Button bsStyle="primary" type="submit">Log In</Button>
+							</ButtonToolbar>
+						</Formsy.Form>
+					</Col>
+				</Row>
 			</div>);
 	}
 }

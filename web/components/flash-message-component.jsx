@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Alert, Glyphicon } from 'react-bootstrap';
+
 class FlashMessage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -8,26 +10,27 @@ class FlashMessage extends React.Component {
 	getClassName() {
 		switch (this.props.messageType) {
 			case 'error':
-				return 'flash-message-error';
+				return 'danger';
 
 			case 'warn':
-				return 'flash-message-warn';
+				return 'warning';
+
+			case 'success':
+				return 'success';
 
 			case 'info':
 			default:
-				return 'flash-message-info';
+				return 'info';
 		}
 	}
 
 	render() {
 		if ( this.props.title ) {
 			return (
-				<div className={ this.getClassName() }>
-					<p>
-						<strong>{ this.props.title }</strong>&nbsp;{ this.props.description }&nbsp;
-						<button onClick={ this.props.onClearMessage }>Ok</button>
-					</p>
-				</div>);
+				<Alert bsStyle={ this.getClassName() }>
+					<strong>{ this.props.title }</strong>&nbsp;{ this.props.description }&nbsp;
+					<a onClick={ this.props.onClearMessage }><Glyphicon glyph="remove" /></a>
+				</Alert>);
 		}
 
 		return null;

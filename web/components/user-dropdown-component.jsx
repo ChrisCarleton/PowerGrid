@@ -1,6 +1,9 @@
-import { browserHistory, Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import React from 'react';
 import request from 'superagent';
+
+import { MenuItem, Nav, NavDropdown, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 class UserDropdown extends React.Component {
 	constructor(props) {
@@ -27,19 +30,29 @@ class UserDropdown extends React.Component {
 	render() {
 		if (this.props.user.username) {
 			return (
-				<div>
-					Welcome { this.props.user.displayName || this.props.user.username }&nbsp;
-					<Link to="/profile">My Profile</Link>&nbsp;
-					<Link to="/changePassword">Change My Password</Link>&nbsp;
-					<a href="#" onClick={ this.signOut }>Sign Out</a>
-				</div>);
+				<Nav pullRight>
+					<NavDropdown title={ `Welcome ${this.props.user.displayName || this.props.user.username}` } id="user_dropdown">
+						<LinkContainer to="/profile">
+							<MenuItem>My Profile</MenuItem>
+						</LinkContainer>
+						<LinkContainer to="/changePassword">
+							<MenuItem>Change My Password</MenuItem>
+						</LinkContainer>
+						<MenuItem divider />
+						<MenuItem onClick={ this.signOut }>Sign Out</MenuItem>
+					</NavDropdown>
+				</Nav>);
 		}
 
 		return (
-			<div>
-				<Link to="/login">Login</Link>&nbsp;or&nbsp;
-				<Link to="/signup">Sign Up</Link>
-			</div>);
+			<Nav pullRight>
+				<LinkContainer to="/login">
+					<NavItem>Login</NavItem>
+				</LinkContainer>
+				<LinkContainer to="/signup">
+					<NavItem>Sign Up</NavItem>
+				</LinkContainer>
+			</Nav>);
 	}
 }
 
