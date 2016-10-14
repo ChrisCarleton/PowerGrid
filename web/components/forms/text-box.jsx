@@ -20,7 +20,7 @@ class TextBox extends React.Component {
 	getValidationState() {
 		if (this.props.isPristine()) {
 			return null;
-		} 
+		}
 
 		if (this.props.showRequired() || this.props.getErrorMessage()) {
 			return 'error';

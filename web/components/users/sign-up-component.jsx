@@ -119,7 +119,9 @@ class SignUp extends React.Component {
 								value=""
 								required />
 
-							<Button bsStyle="primary" type="submit" disabled={ this.state.submitDisabled }>Sign Up</Button>
+							<ButtonToolbar>
+								<Button bsStyle="primary" type="submit" disabled={ this.state.submitDisabled }>Sign Up</Button>
+							</ButtonToolbar>
 						</Formsy.Form>
 					</Col>
 				</Row>

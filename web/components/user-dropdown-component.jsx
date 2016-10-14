@@ -1,4 +1,4 @@
-import { browserHistory, Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import React from 'react';
 import request from 'superagent';
 
