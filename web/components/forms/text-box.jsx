@@ -1,6 +1,8 @@
 import { Decorator as FormsyElement } from 'formsy-react';
 import React from 'react';
 
+import { ControlLabel, FormControl, FormGroup, HelpBlock } from 'react-bootstrap';
+
 @FormsyElement()
 class TextBox extends React.Component {
 	constructor(props) {
@@ -15,24 +17,37 @@ class TextBox extends React.Component {
 		this.setState({ value: newProps.getValue() });
 	}
 
+	getValidationState() {
+		if (this.props.isPristine()) {
+			return null;
+		} 
+
+		if (this.props.showRequired() || this.props.getErrorMessage()) {
+			return 'error';
+		}
+
+		return 'success';
+	}
+
 	render() {
 		return (
-			<div>
-				<span>{ this.props.label }{ this.props.isRequired() ? '*' : null }:</span>
-				<br />
-				<input
+			<FormGroup validationState={ this.getValidationState() }>
+				<ControlLabel>{ this.props.label }{ this.props.isRequired() ? '*' : null }:</ControlLabel>
+				<FormControl
+					id={ this.props.id }
 					type={ this.props.type || 'text' }
 					value={ this.state.value }
 					onChange={ e => this.setState({ value: e.target.value }) }
 					onBlur={ () => this.props.setValue(this.state.value) } />
 
-				{ !this.props.isPristine() && this.props.showRequired() ? <span>{ this.props.label } is required.</span> : null }
-				{ !this.props.isPristine() ? <span>{ this.props.getErrorMessage() }</span> : null }
-			</div>);
+				{ !this.props.isPristine() && this.props.showRequired() ? <HelpBlock>{ this.props.label } is required.</HelpBlock> : null }
+				{ !this.props.isPristine() ? <HelpBlock>{ this.props.getErrorMessage() }</HelpBlock> : null }
+			</FormGroup>);
 	}
 }
 
 TextBox.propTypes = Object.assign({
+	id: React.PropTypes.string.isRequired,
 	label: React.PropTypes.string.isRequired,
 	type: React.PropTypes.oneOf(['text', 'password'])
 });
