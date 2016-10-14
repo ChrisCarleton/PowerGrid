@@ -21,3 +21,5 @@ To run the test suite
 ```
 npm run test
 ```
+
+## Environment Variables
