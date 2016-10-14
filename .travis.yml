@@ -5,7 +5,12 @@ before_script:
 - docker run -d -p 27017:27017 --name mongodb mongo
 - docker build -t powergrid .
 script:
-- docker run -it --link mongodb -e "POWERGRID_DATABASE=mongodb://mongodb:27017/powergrid_travis"
+- docker run -it --link mongodb
+  -e "POWERGRID_DATABASE=mongodb://mongodb:27017/powergrid_travis"
+  -e "CI_NAME=travis-ci"
+  -e "CI_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER"
+  -e "CI_BRANCH=$TRAVIS_BRANCH"
+  -e "CI_PULL_REQUEST=$TRAVIS_PULL_REQUEST"
   powergrid gulp report-coverage
 before_install:
 - openssl aes-256-cbc -K $encrypted_df684f4cce17_key -iv $encrypted_df684f4cce17_iv
