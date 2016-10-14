@@ -2,8 +2,6 @@ sudo: required
 services:
 - docker
 before_script:
-- openssl aes-256-cbc -K $encrypted_df684f4cce17_key -iv $encrypted_df684f4cce17_iv
-  -in .coveralls.yml.enc -out .coveralls.yml -d
 - docker run -d -p 27017:27017 --name mongodb mongo
 - docker build -t powergrid .
 script:
