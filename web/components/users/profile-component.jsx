@@ -2,7 +2,10 @@ import Formsy from 'formsy-react';
 import React from 'react';
 import request from 'superagent';
 import SecurePage from '../secure-page';
+import StaticField from '../forms/static-field';
 import TextBox from '../forms/text-box';
+
+import { Button, ButtonToolbar, Col, PageHeader, Row } from 'react-bootstrap';
 
 class Profile extends React.Component {
 	constructor(props) {
@@ -50,32 +53,44 @@ class Profile extends React.Component {
 	render() {
 		return (
 			<SecurePage>
-				<h2>Edit Profile for { this.props.displayName }</h2>
-				<p>Username: { this.props.username }</p>
-				<p>Member since: { this.props.memberSince }</p>
-				<Formsy.Form onValidSubmit={ this.onSubmit }>
-					<TextBox
-						id="displayName"
-						name="displayName"
-						label="Display name"
-						value={ this.props.displayName }
-						required />
+				<PageHeader>Edit Profile for { this.props.displayName }</PageHeader>
+				<Row>
+					<Col lg={ 4 } sm={ 12 }>
+						<Formsy.Form onValidSubmit={ this.onSubmit }>
+							<StaticField
+								label="Username"
+								value={ this.props.username } />
 
-					<TextBox
-						id="email"
-						name="email"
-						label="E-mail address"
-						value={ this.props.email }
-						validations={ {
-							isEmail: true
-						} }
-						validationErrors={ {
-							isEmail: 'Not a valid e-mail address.'
-						} }
-						required />
+							<StaticField
+								label="Member since"
+								value={ this.props.memberSince } />
 
-					<button type="submit" disabled={ this.state.submitDisabled }>Update Profile</button>
-				</Formsy.Form>
+							<TextBox
+								id="displayName"
+								name="displayName"
+								label="Display name"
+								value={ this.props.displayName }
+								required />
+
+							<TextBox
+								id="email"
+								name="email"
+								label="E-mail address"
+								value={ this.props.email }
+								validations={ {
+									isEmail: true
+								} }
+								validationErrors={ {
+									isEmail: 'Not a valid e-mail address.'
+								} }
+								required />
+
+							<ButtonToolbar>
+								<Button bsStyle="primary" type="submit" disabled={ this.state.submitDisabled }>Update Profile</Button>
+							</ButtonToolbar>
+						</Formsy.Form>
+					</Col>
+				</Row>
 			</SecurePage>);
 	}
 }

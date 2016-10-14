@@ -6,6 +6,8 @@ import React from 'react';
 import TextBox from '../forms/text-box';
 import request from 'superagent';
 
+import { Button, ButtonToolbar, Col, PageHeader, Row } from 'react-bootstrap';
+
 class SignUp extends React.Component {
 	constructor(props) {
 		super(props);
@@ -50,73 +52,77 @@ class SignUp extends React.Component {
 	render() {
 		return (
 			<div>
-				<h2>Sign Up</h2>
-				<Formsy.Form onValidSubmit={ this.onSubmit }>
-					<TextBox
-						id="username"
-						name="username"
-						label="User name"
-						validations={ {
-							matchRegexp: /^[a-z0-9_\-\.]+$/i,
-							maxLength: 60
-						} }
-						validationErrors={ {
-							matchRegexp: 'User names can consist of letters, numbers, underscores, dots, and hyphens.',
-							maxLength: 'User names cannot be longer than 60 characters.'
-						} }
-						value=""
-						required />
+				<PageHeader>Sign Up</PageHeader>
+				<Row>
+					<Col lg={ 4 } sm={ 12 }>
+						<Formsy.Form onValidSubmit={ this.onSubmit }>
+							<TextBox
+								id="username"
+								name="username"
+								label="User name"
+								validations={ {
+									matchRegexp: /^[a-z0-9_\-\.]+$/i,
+									maxLength: 60
+								} }
+								validationErrors={ {
+									matchRegexp: 'User names can consist of letters, numbers, underscores, dots, and hyphens.',
+									maxLength: 'User names cannot be longer than 60 characters.'
+								} }
+								value=""
+								required />
 
-					<TextBox
-						id="password"
-						type="password"
-						name="password"
-						label="Password"
-						value=""
-						validations={ {
-							matchRegexp: window.appSettings.passwordStrengthRegex
-						} }
-						validationErrors={ {
-							matchRegexp: 'Password does not meet strength requirements. It must contain a letter, a number, a special character and be at least 7 characters long.'
-						} }
-						required />
+							<TextBox
+								id="password"
+								type="password"
+								name="password"
+								label="Password"
+								value=""
+								validations={ {
+									matchRegexp: window.appSettings.passwordStrengthRegex
+								} }
+								validationErrors={ {
+									matchRegexp: 'Password does not meet strength requirements. It must contain a letter, a number, a special character and be at least 7 characters long.'
+								} }
+								required />
 
-					<TextBox
-						id="confirmPassword"
-						type="password"
-						name="confirmPassword"
-						label="Confirm password"
-						value=""
-						validations={ {
-							equalsField: 'password'
-						} }
-						validationErrors={ {
-							equalsField: 'Passwords do not match.'
-						} }
-						required />
+							<TextBox
+								id="confirmPassword"
+								type="password"
+								name="confirmPassword"
+								label="Confirm password"
+								value=""
+								validations={ {
+									equalsField: 'password'
+								} }
+								validationErrors={ {
+									equalsField: 'Passwords do not match.'
+								} }
+								required />
 
-					<TextBox
-						id="email"
-						name="email"
-						label="E-mail address"
-						value=""
-						validations={ {
-							isEmail: true
-						} }
-						validationErrors={ {
-							isEmail: 'E-mail address must be valid.'
-						} }
-						required />
+							<TextBox
+								id="email"
+								name="email"
+								label="E-mail address"
+								value=""
+								validations={ {
+									isEmail: true
+								} }
+								validationErrors={ {
+									isEmail: 'E-mail address must be valid.'
+								} }
+								required />
 
-					<TextBox
-						id="displayName"
-						name="displayName"
-						label="Display name"
-						value=""
-						required />
+							<TextBox
+								id="displayName"
+								name="displayName"
+								label="Display name"
+								value=""
+								required />
 
-					<button type="submit" disabled={ this.state.submitDisabled }>Sign Up</button>
-				</Formsy.Form>
+							<Button bsStyle="primary" type="submit" disabled={ this.state.submitDisabled }>Sign Up</Button>
+						</Formsy.Form>
+					</Col>
+				</Row>
 			</div>);
 	}
 }

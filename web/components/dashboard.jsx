@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { PageHeader } from 'react-bootstrap';
+
 class Dashboard extends React.Component {
 	constructor(props) {
 		super(props);
@@ -8,7 +10,7 @@ class Dashboard extends React.Component {
 	render() {
 		return (
 			<div>
-				<h2>Home Page</h2>
+				<PageHeader>Home Page</PageHeader>
 				<p>Isn't it great?</p>
 			</div>);
 	}
