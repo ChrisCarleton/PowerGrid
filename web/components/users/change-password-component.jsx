@@ -5,6 +5,8 @@ import request from 'superagent';
 import SecurePage from '../secure-page';
 import TextBox from '../forms/text-box';
 
+import { Button, ButtonToolbar, Col, PageHeader, Row } from 'react-bootstrap';
+
 class ChangePassword extends React.Component {
 	constructor(props) {
 		super(props);
@@ -30,46 +32,52 @@ class ChangePassword extends React.Component {
 	render() {
 		return (
 			<SecurePage>
-				<h2>Change Password</h2>
-				<Formsy.Form onValidSubmit={ this.onSubmit }>
-					<TextBox
-						id="oldPassword"
-						name="oldPassword"
-						type="password"
-						label="Old password"
-						value=""
-						required />
+				<PageHeader>Change Password</PageHeader>
+				<Row>
+					<Col lg={ 4 } sm={ 12 }>
+						<Formsy.Form onValidSubmit={ this.onSubmit }>
+							<TextBox
+								id="oldPassword"
+								name="oldPassword"
+								type="password"
+								label="Old password"
+								value=""
+								required />
 
-					<TextBox
-						id="newPassword"
-						name="newPassword"
-						type="password"
-						label="New password"
-						value=""
-						validations={ {
-							matchRegexp: window.appSettings.passwordStrengthRegex
-						} }
-						validationErrors={ {
-							matchRegexp: 'Password does not meet strength requirements. It must contain a letter, a number, a special character and be at least 7 characters long.'
-						} }
-						required />
+							<TextBox
+								id="newPassword"
+								name="newPassword"
+								type="password"
+								label="New password"
+								value=""
+								validations={ {
+									matchRegexp: window.appSettings.passwordStrengthRegex
+								} }
+								validationErrors={ {
+									matchRegexp: 'Password does not meet strength requirements. It must contain a letter, a number, a special character and be at least 7 characters long.'
+								} }
+								required />
 
-					<TextBox
-						id="confirmPassword"
-						name="confirmPassword"
-						type="password"
-						label="Confirm password"
-						value=""
-						validation={ {
-							equalsField: 'newPassword'
-						} }
-						validationErrors={ {
-							equalsField: 'Passwords do not match.'
-						} }
-						required />
+							<TextBox
+								id="confirmPassword"
+								name="confirmPassword"
+								type="password"
+								label="Confirm password"
+								value=""
+								validations={ {
+									equalsField: 'newPassword'
+								} }
+								validationErrors={ {
+									equalsField: 'Passwords do not match.'
+								} }
+								required />
 
-					<button type="submit">Change Password</button>
-				</Formsy.Form>
+							<ButtonToolbar>
+								<Button bsStyle="primary" type="submit">Change Password</Button>
+							</ButtonToolbar>
+						</Formsy.Form>
+					</Col>
+				</Row>
 			</SecurePage>);
 	}
 }
