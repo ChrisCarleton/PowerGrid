@@ -10,7 +10,7 @@ import log from './logger';
 import connectMongo from 'connect-mongo';
 import path from 'path';
 import pug from 'pug';
-import security from './util/security';
+import security from './security/security';
 import session from 'express-session';
 import uuid from 'uuid';
 
